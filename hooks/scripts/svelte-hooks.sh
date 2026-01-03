@@ -1,6 +1,6 @@
 #!/bin/bash
 # Svelte development hooks for Claude Code
-# Handles: linting, formatting, type checking
+# Fast-only hooks - heavy commands shown as hints
 
 set -o pipefail
 
@@ -14,23 +14,21 @@ ext="${file_path##*.}"
 
 case "$ext" in
     svelte)
-        # Prettier formatting
+        # Prettier formatting (fast - single file)
         if command -v prettier >/dev/null 2>&1; then
             prettier --write "$file_path" --plugin prettier-plugin-svelte 2>/dev/null || true
         fi
 
-        # ESLint (linting)
+        # ESLint auto-fix (fast - single file)
         if command -v eslint >/dev/null 2>&1; then
             eslint --fix "$file_path" 2>/dev/null || true
         fi
 
-        # Svelte check (type checking)
-        if command -v svelte-check >/dev/null 2>&1; then
-            svelte-check --fail-on-warnings 2>/dev/null || true
-        fi
-
-        # Surface TODO/FIXME comments
+        # TODO/FIXME check (fast - grep only)
         grep -n -E '(TODO|FIXME|HACK|XXX|BUG):' "$file_path" 2>/dev/null || true
+
+        # Hints for on-demand commands
+        echo "💡 svelte-check && npm test"
         ;;
 esac
 

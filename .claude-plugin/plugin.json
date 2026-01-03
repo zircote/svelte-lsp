@@ -1,6 +1,6 @@
 {
   "name": "svelte-lsp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Svelte language server plugin for Claude Code with svelte-language-server integration and automated hooks for linting and formatting",
   "author": {
     "name": "zircote",
